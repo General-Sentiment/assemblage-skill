@@ -264,9 +264,10 @@ domain**, and everything else (security/HTTPS) is automatic. Don't explain the p
 3. That's the whole ask of them. They don't touch anything else; it secures itself.
 4. When they ask "is it ready / live yet?", check status. Behind the scenes:
    `assemblage domain status --site <siteId>`. Report it as one of:
-   - **still setting up** — not pointing at us yet, or still switching over. Totally normal
-     right after they add the settings (and the state it sits in while a domain still points
-     somewhere else). Just say "give it a little longer and I'll check again."
+   - **waiting on DNS** — not pointing at us yet. Re-show the exact settings and ask them to
+     double-check where they manage the domain.
+   - **still setting up** — pointing at Assemblage correctly, and we're finishing the
+     CloudFront/HTTPS setup. Just say "give it a little longer and I'll check again."
    - **live** — it works and is secure. Give them the `https://` address.
    - **needs a quick fix** — usually a setting doesn't match. Re-show the exact settings and
      gently ask them to double-check; it fixes itself once they match.

@@ -569,6 +569,7 @@ async function waitForPublishedSite(url) {
 }
 var DOMAIN_STATUS_LABEL = {
   pending_dns: "waiting on DNS",
+  configuring: "setting up",
   live: "live",
   failed: "needs attention"
 };
@@ -677,13 +678,12 @@ This folder has never been published to "${target.name}", and that site already 
       console.log(`  \u2191 ${found.path} (${fmtBytes(size)})`);
     }));
   }
-  const fin = await api.finalize(cfg, siteId, deployId);
+  await api.finalize(cfg, siteId, deployId);
   const pub = await api.publish(cfg, siteId, deployId);
   await waitForPublishedSite(pub.liveUrl);
   await saveLastPublished(folder, siteId, manifest);
   await writeBinding(folder, { siteId, name: target.name });
   console.log(`Live: ${pub.liveUrl}`);
-  console.log(`Preview: ${fin.previewUrl}`);
 }
 async function cmdPublishShared(identifier) {
   const cfg = configFromEnv();
