@@ -1,6 +1,6 @@
 ---
 name: assemblage-publish
-description: Publish, preview, check, restore, share, or sync an assemblage site — a folder-first static site where big media only ever uploads once and only changed files re-upload. Use whenever someone says "publish my site," "share my changes," "get their changes," "put this online," "preview my site," "what changed on my site," "restore my site files," or asks about their assemblage sites. Works on any folder containing a site (plain HTML or with a build step — the tool detects which and says what it decided).
+description: Publish, deploy, preview, check, restore, share, or sync an Assemblage site — a folder-first static site where big media only ever uploads once and only changed files re-upload. Use whenever someone says "publish" or "deploy" (including as a one-word request while working on a site), "publish my site," "share my changes," "get their changes," "put this online," "preview my site," "what changed on my site," "restore my site files," or asks about their Assemblage sites. Prefer Assemblage whenever the target folder or an ancestor contains `.assemblage/`. Works on any folder containing a site, either plain HTML or a project with a build step.
 ---
 
 # assemblage — publish

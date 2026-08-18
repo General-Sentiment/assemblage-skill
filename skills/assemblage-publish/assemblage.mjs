@@ -500,6 +500,39 @@ async function writeBinding(folder, binding) {
   const dir = join4(folder, ".assemblage");
   await mkdir(dir, { recursive: true });
   await writeFile(join4(dir, "binding.json"), JSON.stringify(binding, null, 2));
+  await ensureAgentPublishHint(folder, binding);
+}
+async function ensureAgentPublishHint(folder, binding) {
+  const path = join4(folder, "AGENTS.md");
+  const section = `## Publishing With Assemblage
+
+This directory is bound to Assemblage.
+
+- Site ID: \`${binding.siteId}\`
+${binding.name ? `- Site name: \`${binding.name}\`
+` : ""}
+When asked to publish or deploy this directory, use:
+
+\`\`\`bash
+assemblage publish . --site ${binding.name ?? binding.siteId}
+\`\`\`
+
+Do not choose GitHub Pages, S3, Netlify, Vercel, or another hosting path unless
+the user explicitly asks for that different target.
+`;
+  let contents = "";
+  try {
+    contents = await readFile2(path, "utf8");
+  } catch {
+    await writeFile(path, `# Agent Instructions
+
+${section}`);
+    return;
+  }
+  if (/Assemblage|assemblage publish/.test(contents))
+    return;
+  const sep = contents.endsWith("\n") ? "\n" : "\n\n";
+  await writeFile(path, `${contents}${sep}${section}`);
 }
 async function folderKnowsSite(folder, siteId) {
   return await lastPublished(folder, siteId) !== void 0;
@@ -1166,6 +1199,8 @@ async function cmdInvite(email, identifier) {
   const invitation = await api.inviteCollaborator(cfg, target.siteId, email);
   if (invitation.sent) {
     console.log(`Invitation sent to ${invitation.email}. It expires ${new Date(invitation.expiresAt).toLocaleDateString()}.`);
+    console.log(`Invitation link:
+${invitation.inviteUrl}`);
   } else {
     console.log(`Send this invitation to ${invitation.email}:
 ${invitation.inviteUrl}`);
